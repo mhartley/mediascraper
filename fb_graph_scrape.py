@@ -1,7 +1,7 @@
 import urllib2, json
 from unidecode import unidecode
 #facebook access
-ACCESS_TOKEN = "EAACEdEose0cBAO8ozOzZBpeXJZCDENoyyXhPRyDEPj9eRvQGhc9zkcYlahH9HjcFGZChU7Trb5oZAls3DDs8y2RXtRQXuv1DejqzYSJkspUAAd75mCzwppkQkGpQv1sm60C7daLEXqTm50enDskBEZCRQZA65wbYiNVPFOGyqEvZBXsuW2TZCyeQKdwfpJj2LUeZAS4RHXi8MhgZDZD"
+ACCESS_TOKEN = ""
 
 request_url = "https://graph.facebook.com/v2.10/95475020353/posts?fields=message%2Clink%2Ccreated_time&limit=100&access_token=" + ACCESS_TOKEN
 
@@ -38,19 +38,11 @@ def request_fb_page_posts(graph_url):
 	return data
 
 jsondata = request_fb_page_posts(request_url)
-	
-def scrapeBBsite():
-	for a in data['data']:
 		
-
-
-
 
 ##page_posts data is pretty dirty, 18650 lines. Follow links to scrape page posts, headlines and decks
 ##We're only accepting data from completed rows.
 ##First task is to get complete url to which the posted shortened url links, then scrape
-
-
 
 def scrapeBBPages():
 	for line in jsondata:
