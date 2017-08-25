@@ -20,5 +20,27 @@ def scrapeBBarticle(articleUrl):
 		return [articleUrl, headline, par1]
 
 
-scrapeBBarticle('http://www.breitbart.com/big-government/2017/06/21/deep-state-hillary-clinton-staffers-still-have-security-clearances-access-to-sensitive-government-information/?utm_source=facebook&utm_medium=social')
-scrapeBBarticle('http://www.breitbart.com/big-government/2017/06/21/kobach-refugees-and-terrorism-a-massive-vulnerability-in-our-immigration-system-2/?utm_source=facebook&utm_medium=social')
+appendfile = open('bbdata.csv', 'a+')
+
+with open('reslinks.txt', 'r') as source:
+	count = 0
+	othcount = 0
+	for link in source:
+
+		### handling for links that are not to breitbart
+		if re.match('^http://www.breitbart.com', link) == None:
+			othcount = othcount +1
+		
+		###if it is breitbart, then scrape the page	
+		else:
+			try:
+				link = re.sub('[\n,]', '', link)
+				pageVal = scrapeBBarticle(link)
+				appendfile.write(str(pageVal[0]) + ',' + str(pageVal[1]) + ',' + str(pageVal[2]) + '\n')
+				count = count + 1
+			except Exception as exc:
+				# print traceback.format_exc()
+				print exc
+
+	print '#### BB ARTICLE COUNT : %d ####' % count
+	print '#### OTH ARTICLE COUNT : %d ####' % othcount

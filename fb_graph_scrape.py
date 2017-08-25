@@ -30,17 +30,34 @@ def request_fb_page_posts(graph_url):
 	print 'last post date' + last_post_date
 	jsonfile.write(response + '\n') ### write the response (string) not data (dict)
 	if last_post_date not in ['2016-07','2016-08']:
-		# try:
-		print '#####REQESTING NEXT####'
+		print '#####REQESTING NEXT#####'
 		print request_url
 		request_fb_page_posts(request_url)  ##recursiveness... to infinity and beyond! (not atually an infinite loop)
-		# except KeyError:
-		# 	print 'Key Error on call to Facebook JSON Token'
-		# 	print 'date of last post processed: %s' % last_post_date
-		# 	return
+		#if graph api throws an error this will throw a python KeyError
 
-request_fb_page_posts(request_url)
+	return data
 
+jsondata = request_fb_page_posts(request_url)
+	
+def scrapeBBsite():
+	for a in data['data']:
+		
+
+
+
+
+##page_posts data is pretty dirty, 18650 lines. Follow links to scrape page posts, headlines and decks
+##We're only accepting data from completed rows.
+##First task is to get complete url to which the posted shortened url links, then scrape
+
+
+
+def scrapeBBPages():
+	for line in jsondata:
+		linksArray = [filter(lambda t: t if post['link'] != None else 0, post) for post in line['data']]
+		print linksArray
+
+scrapeBBPages();
 
 
 
