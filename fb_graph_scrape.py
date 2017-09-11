@@ -1,12 +1,16 @@
-import urllib2, json
+import urllib2, json, csv
 from unidecode import unidecode
 #facebook access
-ACCESS_TOKEN = ""
+ACCESS_TOKEN = 'EAACEdEose0cBAABVeCaJGtdBnf2MsZAgzeG4pVMIb6SDCJUcMLCuvovTsTYX0vxYtHWd8cqCs1HlxBDl4hA2kbCGeLQImQR9ZAfZBgZBxMl2PeUJFOGo6g1AhVZCCygwK04bECsfJnIUjRrilrrfY5GsjF90h0GVPNpq1sPMZCqnDZCIHZAAoC83TgCJCZAT64SwZD'
+TARGET_PAGE_ID = '456740217686384' # guardian
 
-request_url = "https://graph.facebook.com/v2.10/95475020353/posts?fields=message%2Clink%2Ccreated_time&limit=100&access_token=" + ACCESS_TOKEN
+request_url = "https://graph.facebook.com/v2.10/" + TARGET_PAGE_ID + "/posts?fields=message%2Clink%2Ccreated_time&limit=100&access_token=" + ACCESS_TOKEN
 
-jsonfile = open('bb_fb_page_posts.json', 'a+')
-csvfile = open('bb_fb_page_posts.csv', 'a+')
+jsonfile = open('guardian_fb_page_posts.json', 'a+')
+csvfile = open('guardian_fb_page_posts.csv', 'a+')
+
+jsonfile.truncate()
+csvfile.truncate()
 
 def request_fb_page_posts(graph_url):
 	request = urllib2.Request(graph_url)
@@ -18,7 +22,7 @@ def request_fb_page_posts(graph_url):
 	def json2csv():
 		for a in data['data']:
 			try:
-				postrecord = str(unidecode(a['link'])) + ',' + str(unidecode(a['message'])) + ',' + str(unidecode(a['created_time'])) + '\n'
+				postrecord = str(unidecode(a['link'])) + '|' + str(unidecode(a['message'])) + '|' + str(unidecode(a['created_time'])) + '\n'
 			except KeyError:
 				postrecord = ',,\n'
 			csvfile.write(postrecord)
@@ -29,7 +33,7 @@ def request_fb_page_posts(graph_url):
 	last_post_date = str(data['data'][-1]['created_time'][:7])
 	print 'last post date' + last_post_date
 	jsonfile.write(response + '\n') ### write the response (string) not data (dict)
-	if last_post_date not in ['2016-07','2016-08']:
+	if last_post_date not in ['2016-03']:
 		print '#####REQESTING NEXT#####'
 		print request_url
 		request_fb_page_posts(request_url)  ##recursiveness... to infinity and beyond! (not atually an infinite loop)
@@ -44,12 +48,48 @@ jsondata = request_fb_page_posts(request_url)
 ##We're only accepting data from completed rows.
 ##First task is to get complete url to which the posted shortened url links, then scrape
 
-def scrapeBBPages():
-	for line in jsondata:
-		linksArray = [filter(lambda t: t if post['link'] != None else 0, post) for post in line['data']]
-		print linksArray
 
-scrapeBBPages();
+# reslinksfile = open('hp_reslinks.txt', 'a+')
+
+
+
+# jsonfile.read()
+# def getResolutionURL():
+
+# 	def findResolution(start):
+# 		req = urllib2.Request(start)
+# 		res = urllib2.urlopen(req)
+# 		return res.geturl()
+
+# 	reslinks = []
+	
+# 	deadlinkcount = 0
+# 	nolinkcount = 0
+# 	for a in jsonfile:
+# 		print 'hello'
+# 		jsondata = json.loads(a)
+# 		jsondata = jsondata['data']
+# 		for post in jsondata:
+# 			try:
+# 				reslink = findResolution(post['link'])
+# 				print reslink
+# 				reslinksfile.write(str(reslink) + '\n')
+# 			except KeyError:
+# 				nolinkcount = nolinkcount + 1
+# 				pass
+# 			except urllib2.HTTPError:
+# 				deadlinkcount = deadlinkcount + 1
+# 				pass
+# 	print 'dead links: %d, no links: %d' % (deadlinkcount, nolinkcount)
+# 	print 'links harvested: %s' % str(len(reslinks))
+	
+
+# getResolutionURL();
+
+# jsonfile.close()
+# reslinksfile.close()
+
+
 
 
 

@@ -1,17 +1,18 @@
 import json, urllib2
 
-jsonfile = open('temp_fix.json', 'r+')
-reslinksfile = open('reslinks.txt', 'a+')
+jsonfile = open('guardian_fb_page_posts.json', 'r+')
+reslinksfile = open('guardian_reslinks.txt', 'a+')
 
 
-def scrapeBBPages():
+def getResolutionURL():
 
 	def findResolution(start):
-		req = urllib2.Request(start)
+		req = urllib2.Request(start, headers={'User-Agent' : "THE GIANT REPUBLICAN DILDO"})
 		res = urllib2.urlopen(req)
 		return res.geturl()
 
 	reslinks = []
+	
 	deadlinkcount = 0
 	nolinkcount = 0
 	for a in jsonfile:
@@ -25,13 +26,15 @@ def scrapeBBPages():
 			except KeyError:
 				nolinkcount = nolinkcount + 1
 				pass
-			except urllib2.HTTPError:
+			except urllib2.HTTPError, e:
 				deadlinkcount = deadlinkcount + 1
-				pass
+				print e.fp.read()
+			except Exception as e:
+				print str(e)
 	print 'dead links: %d, no links: %d' % (deadlinkcount, nolinkcount)
 	print 'links harvested: %s' % str(len(reslinks))
 	
-scrapeBBPages();
+getResolutionURL();
 
 jsonfile.close()
 reslinksfile.close()
