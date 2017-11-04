@@ -1,7 +1,7 @@
 import json, urllib2
 
-jsonfile = open('guardian_fb_page_posts.json', 'r+')
-reslinksfile = open('guardian_reslinks.txt', 'a+')
+jsonfile = open('bbsep_fb_page_posts.json', 'r+')
+reslinksfile = open('reslinks.txt', 'a+')
 
 
 def getResolutionURL():

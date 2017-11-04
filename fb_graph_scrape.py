@@ -1,20 +1,20 @@
 import urllib2, json, csv
 from unidecode import unidecode
 #facebook access
-ACCESS_TOKEN = 'EAACEdEose0cBAABVeCaJGtdBnf2MsZAgzeG4pVMIb6SDCJUcMLCuvovTsTYX0vxYtHWd8cqCs1HlxBDl4hA2kbCGeLQImQR9ZAfZBgZBxMl2PeUJFOGo6g1AhVZCCygwK04bECsfJnIUjRrilrrfY5GsjF90h0GVPNpq1sPMZCqnDZCIHZAAoC83TgCJCZAT64SwZD'
-TARGET_PAGE_ID = '456740217686384' # guardian
-
+ACCESS_TOKEN = 'EAACEdEose0cBAEcIgPRrEVeWVVmHoPyP65toAGcRxIPUlF0O4IBT7b4R2wMZBOm0uVE6iSJ3Np8tG56WWzUGX7s97sk689ZCofZAZBqiqhLEaF4y6N5eYQfHC4tABRZCwPZC6oP1agIfKDqUEriBSZA8yj22QFNI9vRnGDAHkXTSAsQbFtHKgEHRFoZCWszwLE8ZD'
+TARGET_PAGE_ID = "95475020353"
 request_url = "https://graph.facebook.com/v2.10/" + TARGET_PAGE_ID + "/posts?fields=message%2Clink%2Ccreated_time&limit=100&access_token=" + ACCESS_TOKEN
 
-jsonfile = open('guardian_fb_page_posts.json', 'a+')
-csvfile = open('guardian_fb_page_posts.csv', 'a+')
+jsonfile = open('bbsep_fb_page_posts.json', 'a+')
+csvfile = open('bbsep_fb_page_posts.csv', 'a+')
 
 jsonfile.truncate()
 csvfile.truncate()
 
 def request_fb_page_posts(graph_url):
+	print graph_url
 	request = urllib2.Request(graph_url)
-	response = urllib2.urlopen(request).read()  #return a json-formatted string
+	response = urllib2.urlopen(request).read()  
 	data = json.loads(response)
 	next = data['paging']['next']
 	
@@ -33,7 +33,7 @@ def request_fb_page_posts(graph_url):
 	last_post_date = str(data['data'][-1]['created_time'][:7])
 	print 'last post date' + last_post_date
 	jsonfile.write(response + '\n') ### write the response (string) not data (dict)
-	if last_post_date not in ['2016-03']:
+	if last_post_date not in ['2017-08']:
 		print '#####REQESTING NEXT#####'
 		print request_url
 		request_fb_page_posts(request_url)  ##recursiveness... to infinity and beyond! (not atually an infinite loop)
